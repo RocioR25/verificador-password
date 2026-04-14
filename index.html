@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Verificador de Contraseñas</title>
+
+<style>
+    body {
+        font-family: Arial;
+        background-color: #eaf4ff;
+        text-align: center;
+        padding: 40px;
+    }
+
+    .contenedor {
+        background: white;
+        padding: 30px;
+        border-radius: 10px;
+        width: 350px;
+        margin: auto;
+        box-shadow: 0 0 10px rgba(0,0,0,0.2);
+    }
+
+    input {
+        width: 90%;
+        padding: 10px;
+        margin: 10px;
+    }
+
+    button {
+        padding: 10px 20px;
+        background-color: #4CAF50;
+        color: white;
+        border: none;
+        cursor: pointer;
+    }
+
+    .barra {
+        width: 100%;
+        height: 20px;
+        background: #ddd;
+        border-radius: 5px;
+        margin-top: 15px;
+    }
+
+    .progreso {
+        height: 100%;
+        width: 0%;
+        border-radius: 5px;
+    }
+
+    #nivel {
+        font-weight: bold;
+        margin-top: 10px;
+    }
+
+    #recomendacion {
+        margin-top: 10px;
+        font-size: 14px;
+        text-align: left;
+    }
+</style>
+
+</head>
+
+<body>
+
+<div class="contenedor">
+    <h2>🔐 Verificador de Contraseñas</h2>
+
+    <input type="password" id="password" placeholder="Ingrese contraseña">
+
+    <br>
+    <button onclick="analizar()">Analizar</button>
+
+    <div class="barra">
+        <div id="progreso" class="progreso"></div>
+    </div>
+
+    <div id="nivel">Nivel: -</div>
+    <div id="recomendacion"></div>
+</div>
+
+<script>
+
+function analizar() {
+
+    let password = document.getElementById("password").value;
+    let puntaje = 0;
+    let recomendacion = "";
+
+    if (password.length >= 8) {
+        puntaje += 25;
+    } else {
+        recomendacion += "- Usar al menos 8 caracteres<br>";
+    }
+
+    if (/[A-Z]/.test(password)) {
+        puntaje += 25;
+    } else {
+        recomendacion += "- Agregar mayúscula<br>";
+    }
+
+    if (/[0-9]/.test(password)) {
+        puntaje += 25;
+    } else {
+        recomendacion += "- Incluir número<br>";
+    }
+
+    if (/[^a-zA-Z0-9]/.test(password)) {
+        puntaje += 25;
+    } else {
+        recomendacion += "- Agregar símbolo (!@#$%)<br>";
+    }
+
+    let barra = document.getElementById("progreso");
+    barra.style.width = puntaje + "%";
+
+    let nivel = document.getElementById("nivel");
+
+    if (puntaje <= 25) {
+        nivel.innerHTML = "Nivel: Débil";
+        barra.style.background = "red";
+    } else if (puntaje <= 75) {
+        nivel.innerHTML = "Nivel: Media";
+        barra.style.background = "orange";
+    } else {
+        nivel.innerHTML = "Nivel: Fuerte";
+        barra.style.background = "green";
+    }
+
+    let rec = document.getElementById("recomendacion");
+
+    if (recomendacion === "") {
+        rec.innerHTML = "Contraseña segura ✔";
+    } else {
+        rec.innerHTML = recomendacion;
+    }
+}
+
+</script>
+
+</body>
+</html>
